@@ -162,6 +162,15 @@ instância EC2 com a seguinte configuração, conforme especificado no projeto:
 - **Modelo de precificação: On-Demand (100% de utilização mensal)**
 - **Tipo de instância: t4g.micro** (família Graviton, ARM, custo-benefício superior 
   às instâncias x86 equivalentes para cargas leves como uma API de inferência)
+  
+### Evidência das estimativas (Calculadora AWS)
+
+**São Paulo (sa-east-1):**
+<img width="592" height="672" alt="image" src="https://github.com/user-attachments/assets/8eec3d40-e811-481a-945b-87171a1994e0" />
+
+
+**N. Virginia (us-east-1):**
+img width="548" height="696" alt="image" src="https://github.com/user-attachments/assets/7bc0e85c-15e5-4327-ae3a-689b5ecf1fe0" />
 
 ### Resultado comparativo
 
