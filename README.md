@@ -170,7 +170,7 @@ instância EC2 com a seguinte configuração, conforme especificado no projeto:
 
 
 **N. Virginia (us-east-1):**
-img width="548" height="696" alt="image" src="https://github.com/user-attachments/assets/7bc0e85c-15e5-4327-ae3a-689b5ecf1fe0" />
+<img width="548" height="696" alt="image" src="https://github.com/user-attachments/assets/7bc0e85c-15e5-4327-ae3a-689b5ecf1fe0" />
 
 ### Resultado comparativo
 
