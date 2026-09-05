@@ -212,7 +212,7 @@ específicos, ou consentimento explícito do titular para aquela finalidade.
 Manter os dados na região us-east-1 (EUA) configuraria uma transferência 
 internacional de dados que exigiria salvaguardas contratuais adicionais (ex.: 
 Standard Contractual Clauses da própria AWS) e aumentaria a exposição da FarmTech 
-a risco regulatório — incluindo multas de até 2% do faturamento (limitadas a 
+a risco regulatório, incluindo multas de até 2% do faturamento (limitadas a 
 R$ 50 milhões por infração, Art. 52). Hospedar em sa-east-1 elimina esse risco por 
 completo, mantendo os dados sob jurisdição nacional.
 
@@ -239,7 +239,7 @@ maior, a relação custo-risco é claramente desfavorável para a opção mais b
 
 ### Conclusão
 
-Considerando os três critérios acima — conformidade legal, desempenho de acesso e viabilidade econômica —, a região **São Paulo (sa-east-1)** é a escolha tecnicamente mais adequada para a FarmTech Solutions, mesmo representando um custo ~42% maior que a alternativa em N. Virginia. Este é um exemplo prático de que a decisão de arquitetura em nuvem não deve ser guiada apenas pelo menor preço, mas por uma análise multicritério que inclua compliance regulatório e requisitos não funcionais do sistema.
+Considerando os três critérios acima: conformidade legal, desempenho de acesso e viabilidade econômica, a região **São Paulo (sa-east-1)** é a escolha tecnicamente mais adequada para a FarmTech Solutions, mesmo representando um custo ~42% maior que a alternativa em N. Virginia. Este é um exemplo prático de que a decisão de arquitetura em nuvem não deve ser guiada apenas pelo menor preço, mas por uma análise multicritério que inclua compliance regulatório e requisitos não funcionais do sistema.
 
 
 ---
