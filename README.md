@@ -7,7 +7,7 @@ Projeto desenvolvido para a **Fase 5 do curso de Inteligência Artificial da FIA
 ## Integrantes
 
 - **Gilenisson Lucas Bezerra dos Santos** – RM573716
-- **Gabriela Brito Rocha Menezes** – RM574145
+- **Gabriele Brito Rocha Menezes** – RM574145
 
 ---
 
@@ -148,21 +148,90 @@ O desenvolvimento completo da análise, incluindo códigos, gráficos, modelos e
 
 ## 8. Computação em Nuvem – AWS
 
-> **Seção reservada para a análise de infraestrutura e custos em nuvem.**
+# Estimativa de Custos AWS — São Paulo vs. N. Virginia
 
-Nesta etapa será apresentada a comparação de custos para hospedar a API e o banco de dados da FarmTech Solutions na AWS, considerando as regiões:
+Para hospedar a API que recebe os dados dos sensores da FarmTech e executa o modelo 
+de Machine Learning, utilizamos a Calculadora de Preços da AWS para simular uma 
+instância EC2 com a seguinte configuração, conforme especificado no projeto:
 
-- São Paulo (sa-east-1)
-- Virgínia do Norte (us-east-1)
+- **2 vCPUs**
+- **1 GiB de memória RAM**
+- **Até 5 Gbps de rede**
+- **50 GB de armazenamento (EBS)**
+- **Sistema operacional Linux**
+- **Modelo de precificação: On-Demand (100% de utilização mensal)**
+- **Tipo de instância: t4g.micro** (família Graviton, ARM, custo-benefício superior 
+  às instâncias x86 equivalentes para cargas leves como uma API de inferência)
 
-A análise deverá considerar uma máquina Linux com configuração equivalente a:
+### Resultado comparativo
 
-- 2 CPUs
-- 1 GiB de memória
-- até 5 Gigabit de rede
-- 50 GB de armazenamento
+| Região                  | Custo mensal | Custo em 12 meses |
+|-------------------------|:------------:|:------------------:|
+| São Paulo (BR)          | US$ 17,38    | US$ 208,56          |
+| N. Virginia (EUA)       | US$ 10,13    | US$ 121,56          |
+| **Diferença**           | US$ 7,25/mês | **US$ 87,00/ano**   |
 
-Também será apresentada a justificativa da região escolhida considerando aspectos financeiros e requisitos legais relacionados ao armazenamento dos dados.
+A região de N. Virginia apresenta um custo **~42% menor** que São Paulo para a 
+mesma configuração exata de hardware. Essa diferença é esperada e documentada pela 
+própria AWS: a região us-east-1 foi a primeira infraestrutura da AWS, possui a 
+maior densidade de datacenters do mundo e o maior volume de clientes, o que gera 
+economia de escala repassada ao preço final. Já a região sa-east-1 (São Paulo) tem 
+custos operacionais mais altos (energia, importação de hardware, impostos locais) 
+e menor escala, refletindo diretamente no preço da hora de instância.
+
+Do ponto de vista puramente financeiro, portanto, N. Virginia seria a opção mais 
+barata. Entretanto, como veremos a seguir, o critério de custo não é o único, nem 
+o mais importante para esta decisão.
+
+
+## Justificativa Técnica: Escolha da Região
+
+Apesar do menor custo em N. Virginia, **a região escolhida para hospedar a solução 
+é São Paulo (sa-east-1)**. Essa escolha é sustentada por três fatores técnicos:
+
+### 1. Restrição legal — LGPD (Lei nº 13.709/2018)
+
+Os dados coletados pelos sensores (umidade, temperatura, precipitação) estão 
+associados a uma propriedade rural identificável e podem ser combinados com dados 
+cadastrais do produtor (nome, CPF/CNPJ, localização geográfica da fazenda), 
+caracterizando **dado pessoal** nos termos do Art. 5º, I da LGPD. A lei estabelece, 
+no Capítulo V (Arts. 33 a 36), que a transferência internacional de dados pessoais 
+só é permitida em hipóteses específicas: países com nível de proteção adequado 
+reconhecido pela ANPD, uso de cláusulas contratuais padrão, selos/certificados 
+específicos, ou consentimento explícito do titular para aquela finalidade.
+
+Manter os dados na região us-east-1 (EUA) configuraria uma transferência 
+internacional de dados que exigiria salvaguardas contratuais adicionais (ex.: 
+Standard Contractual Clauses da própria AWS) e aumentaria a exposição da FarmTech 
+a risco regulatório — incluindo multas de até 2% do faturamento (limitadas a 
+R$ 50 milhões por infração, Art. 52). Hospedar em sa-east-1 elimina esse risco por 
+completo, mantendo os dados sob jurisdição nacional.
+
+### 2. Latência e acesso rápido aos dados dos sensores
+
+A fazenda e os sensores estão fisicamente localizados no Brasil. O trajeto de rede 
+entre um dispositivo IoT em território nacional e um datacenter na costa leste dos 
+EUA envolve múltiplos saltos internacionais (backbone submarino), adicionando entre 
+120–180 ms de latência round-trip adicional em relação a um datacenter local em 
+São Paulo (tipicamente 5–20 ms). Para uma aplicação que recebe leituras de sensores 
+e precisa retornar inferências de Machine Learning em tempo próximo ao real (ex.: 
+alertas de rendimento de safra), essa diferença é significativa e pode comprometer 
+a experiência de monitoramento contínuo, especialmente em cenários de conectividade 
+rural já instável.
+
+### 3. Análise de custo-benefício
+
+A diferença de custo entre as duas regiões é de US$ 87,00 por ano (aproximadamente 
+R$ 480, cotação de referência). Esse valor é **irrisório** frente ao risco de 
+não conformidade legal (multas na casa de milhões de reais) e frente ao ganho de 
+performance obtido com a menor latência. Em outras palavras: economizar US$ 7,25 
+por mês não justifica o risco jurídico nem o impacto operacional de uma latência 
+maior, a relação custo-risco é claramente desfavorável para a opção mais barata.
+
+### Conclusão
+
+Considerando os três critérios acima — conformidade legal, desempenho de acesso e viabilidade econômica —, a região **São Paulo (sa-east-1)** é a escolha tecnicamente mais adequada para a FarmTech Solutions, mesmo representando um custo ~42% maior que a alternativa em N. Virginia. Este é um exemplo prático de que a decisão de arquitetura em nuvem não deve ser guiada apenas pelo menor preço, mas por uma análise multicritério que inclua compliance regulatório e requisitos não funcionais do sistema.
+
 
 ---
 
